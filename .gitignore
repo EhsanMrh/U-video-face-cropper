@@ -1,8 +1,5 @@
 __pycache__
 .idea
-detected
 faceCropperEnv
-faces
-frames
 videos
-logs
+results

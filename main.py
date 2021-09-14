@@ -8,7 +8,7 @@ from batch_face import RetinaFace
 from tqdm import tqdm
 
 from utils import video_duration, check_directory, get_videos, check_rotation, combine_parallel_results
-from config import ROOT_DIR, DATASET_PATH, FACES_PATH, LOG_PATH, ERROR_CODE_NO_VIDEO, NAMES
+from config import ROOT_DIR, DATASET_PATH, FACES_PATH, LOG_PATH, RESULTS_PATH, ERROR_CODE_NO_VIDEO, NAMES
 
 def init_worker():
     print('Creating networks and loading parameters')
@@ -150,12 +150,13 @@ if __name__ == "__main__":
 
 
     # Check faces directory
+    check_directory(f"{ROOT_DIR}/{RESULTS_PATH}")
     check_directory(f"{ROOT_DIR}/{FACES_PATH}")
 
     list_of_videos = get_videos(DATASET_PATH)
-    # chunks = np.array_split(np.array(list_of_videos), num_process)
-    # process_pool = multiprocessing.Pool(processes=num_process, initializer=init_worker)
-    # pool_output = process_pool.map(video_face_cropper, chunks)
+    chunks = np.array_split(np.array(list_of_videos), num_process)
+    process_pool = multiprocessing.Pool(processes=num_process, initializer=init_worker)
+    pool_output = process_pool.map(video_face_cropper, chunks)
 
     init_worker()
     video_face_cropper(list_of_videos)
